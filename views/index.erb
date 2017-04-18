@@ -1,0 +1,34 @@
+<h3>Create Event</h3>
+<form action='/event' method='post'>
+  <label for='name'>Name</label><br>
+  <input type='text' name='name' id='name' required="true"><br>
+  <label for='date'>Date</label><br>
+  <input type='date' name='date' id='name' required="true"><br>
+  <label for='imageurl'>Image URL</label><br>
+  <input type='imageurl' name='imageurl' id='name' required="true"><br>
+  <button type='submit'>Submit</button>
+</form>
+
+<h1>All Events</h1>
+<ul>
+  <% @events.each do |event|%>
+    <p><a href="/event/<%= event.id() %>"><%=event.name%></a></p>
+    <p><%=event.date%></p>
+    <img class="event_logo" style="width: 150px;" src="<%=event.imageurl%>"/>
+  <%end%>
+</ul>
+<hr>
+
+<h3>Create Artist</h3>
+<form action='/artist' method='post'>
+  <label for='name'>Name</label><br>
+  <input type='text' name='name' id='name' required="true"><br>
+  <button type='submit'>Submit</button>
+</form>
+
+<h1>All artists</h1>
+<ul>
+  <% @artists.each do |artist|%>
+    <p><%= artist.name %></p>
+  <%end%>
+</ul>

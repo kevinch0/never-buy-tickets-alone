@@ -1,0 +1,20 @@
+
+<h1><%= @event.name %></h1>
+<h1><%= @event.date %></h1>
+
+<form action="/event/<%= @event.id() %>" method="post">
+  <input name="_method" type="hidden" value="patch">
+  <label for="name">Rename your event:</label>
+  <input id="name" name="name" type="text" placeholder="<%= @event.name() %>">
+  <label for="date">Change your event's date:</label>
+  <input id="date" name="date" type="text" placeholder="<%= @event.date() %>">
+  <label for="imageurl">Change your event's image:</label>
+  <input id="imageurl" name="imageurl" type="text" placeholder="<%= @event.imageurl() %>">
+  <button class="btn btn-default" type="submit">Update</button>
+</form>
+
+<form action="/event/<%= @event.id() %>" method="post">
+  <input name="_method" type="hidden" value="delete">
+
+  <button class="btn btn-default" type="submit">Delete event</button>
+</form>
