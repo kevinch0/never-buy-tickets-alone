@@ -29,6 +29,6 @@
 <h1>All artists</h1>
 <ul>
   <% @artists.each do |artist|%>
-    <p><%= artist.name %></p>
+    <p><a href="/artist/<%= artist.id() %>"><%= artist.name %></a></p>
   <%end%>
 </ul>
