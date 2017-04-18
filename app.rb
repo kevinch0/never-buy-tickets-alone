@@ -147,3 +147,17 @@ delete("/category/:id") do
   category_to_be_deleted.destroy()
   redirect("/")
 end
+
+get("/user") do
+  erb(:user)
+end
+
+get("/search") do
+  searchTerm= params.fetch("search")
+  @foundEvents = Event.where("name = ?",searchTerm)
+  @foundEvents.each do |event|
+    @foundOffers=Offers.where("event_id = ?", event.id)
+  end
+  @foundArtists = Artist.where("name = ?",searchTerm)
+  erb(:results)
+end
