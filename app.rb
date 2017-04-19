@@ -192,9 +192,10 @@ post("/offer") do
   @offer=Offer.find(Integer(params.fetch('id')))
   erb(:offer_info)
 end
-#  delete("/offer") do
-#     @offer = Offer.find(params.fetch("id").to_i())
-#     @offer.delete()
-#     redirect ("/")
-# end
+
+delete("/offer/:id") do
+    @offer = Offer.find(params.fetch("id").to_i())  
+    @offer.delete()
+    redirect ('/offer')
+end
 
