@@ -1,12 +1,48 @@
-<% if @foundEvents.any? %>
-  <% @foundEvents.each do |event| %>
-    <li><b><%= event.name%></li>
+<% if @foundOffers.any? %>
+  <h2>Offers</h2>
+  <% @foundOffers.each do |offer| %>
+    <h3><b><%= offer.event.name%></h3>
+    <li><b><%= offer.price%></li>
   <% end %>
 <%end%>
 
 <% if @foundOffers.any? %>
-  <h2>Offers</h2>
-  <% @foundOffers.each do |offer| %>
-    <li><b><%= offer.price%></li>
-  <% end %>
+  <ul>
+    <% @foundOffers.each() do |offer| %>
+    	<div class="row">
+    		<div class="panel panel-default">
+  				<div class="panel-body">
+    				<div class="col-md-2">
+    					<li><%= offer.event.name %></li>
+    				</div>
+	      		<div class="col-md-2">
+	      			<li><%= offer.price %></li>
+	      		</div>
+	      		<div class="col-md-3">
+	        		<li>
+	        		<img style="width: 150px;" src="<%= offer.event.imageurl %>">
+	        		</li>
+	        	</div>
+	      		<div class="col-md-2">
+	      			<% if offer.buy_sell %>
+	      				<li>Sell</li>
+	      			<% else %>
+	      				<li>Buy</li>
+	      			<% end %>
+	      		</div>
+
+	        	<div class="col-md-3">
+    					<li>
+  	  					<form action="/offer" method="post">
+  	  						<input type="hidden" name="_method" value="delete">
+  	  						<button type="submit" class="btn btn-danger"> Delete
+  	  						</button>
+  						  </form>
+  					  </li>
+  				  </div>
+      		</div>
+      	</div>
+      </div>
+    <% end %>
+  </ul>
 <%end%>

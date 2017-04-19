@@ -20,8 +20,16 @@ end
 post ('/event') do
   name = params.fetch('name')
   date = params.fetch('date')
+  duration = params.fetch('duration')
   imageurl = params.fetch('imageurl')
-  event = Event.create({:name => name, :date => date, :imageurl => imageurl})
+  category_id = Integer(params.fetch('category_id'))
+  category = Category.find(category_id)
+  venue_id = Integer(params.fetch('venue_id'))
+  venue = Venue.find(venue_id)
+  event = Event.create({:name => name, :date => date, :duration => duration, :imageurl => imageurl, :venue => venue, :category => category})
+  artist_id = Integer(params.fetch('artist_id'))
+  artist = Artist.find(artist_id)
+  ArtistsEvent.create(event: event, artist: artist)
   if event.save()
     redirect ('/')
   else
@@ -155,10 +163,19 @@ end
 get("/search") do
   searchTerm= params.fetch("search")
   @foundEvents = Event.where("name = ?",searchTerm)
-  @foundEvents.each do |event|
-    @foundOffers=Offers.where("event_id = ?", event.id)
-  end
   @foundArtists = Artist.where("name = ?",searchTerm)
+
+  @foundArtists.each do |artist|
+    @foundArtistEvents=ArtistsEvent.where("artist_id= ?",artist.id)
+    @foundArtistEvents.each do |event|
+      @foundOffers=Offer.where("event_id= ?",event.event_id)
+    end
+  end
+
+  @foundEvents.each do |event|
+    @foundOffers=Offer.where("event_id= ?",event.id)
+  end
+
   erb(:results)
 end
 
@@ -172,15 +189,3 @@ post("/offer") do
    @offers=Offer.all()
    erb(:offer)
  end
-
-#offers many-many table
-post("/offer") do
-
-    event_id = params.fetch("event_id").to_i()
-    price = params.fetch("price").to_i()
-
-    @offer = Offer.new({:event_id => event_id, :user_id => 1, :price => price, :type =>false})
-    @offer.save()
-    @offers=Offer.all()
-    erb(:offer)
-  end
