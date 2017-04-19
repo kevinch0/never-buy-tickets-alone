@@ -2,3 +2,29 @@
   <input type='text' name="search" id ="search">
   <button type='submit'>Submit</button>
 </form>
+
+<div class="panel panel-default">
+
+  <div class="panel-heading">Panel heading without title</div>
+  <div class="panel-body">
+    <form action="/offer" method="post">
+      <label for="event_id">Select a Event</label>
+      <select id='event_id' name='event_id' type='text'>
+        <% @events.each() do |event| %>
+        <option value="<%= event.id()%>"> <%= event.name() %> </option>
+        <% end %>
+      </select>
+
+      <label for="price">Price:</label>
+      <input id="price" name="price" type="number">
+
+
+
+   <input type="radio" name="offer" value="false">Buy
+    <input type="radio" name="offer" value= "true">Sell
+
+
+      <button type="submit" class="btn btn-primary">Add</button>
+    </form>
+  </div>
+</div>

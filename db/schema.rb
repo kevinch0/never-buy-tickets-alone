@@ -39,8 +39,10 @@ ActiveRecord::Schema.define(version: 20170419174006) do
     t.datetime "date"
     t.string   "imageurl"
     t.integer  "duration"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.integer  "venue_id"
+    t.integer  "category_id"
   end
 
   create_table "offers", force: :cascade do |t|
@@ -53,12 +55,11 @@ ActiveRecord::Schema.define(version: 20170419174006) do
   end
 
   create_table "users", force: :cascade do |t|
-    t.string   "name"
-    t.string   "imageurl"
-    t.string   "phone_number"
-    t.string   "email"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string   "username"
+    t.string   "password"
+    t.string   "salt"
   end
 
   create_table "venues", force: :cascade do |t|

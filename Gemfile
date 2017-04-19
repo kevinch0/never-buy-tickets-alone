@@ -5,7 +5,7 @@ source("https://rubygems.org")
   gem("rake")
   gem("pg")
   gem("sinatra")
-  
+  gem('bcrypt')
 
   group(:test) do
     gem("rspec")

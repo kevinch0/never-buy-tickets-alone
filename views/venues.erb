@@ -1,0 +1,28 @@
+<div class="row">
+  <div class="col-md-6">
+    <h3>Create Venue</h3>
+    <form action='/venue' method='post'>
+      <label for='name'>Name</label><br>
+      <input type='text' name='name' id='name' required="true"><br>
+
+      <label for='address'>Address</label><br>
+      <input type='address' name='address' id='address' required="true"><br>
+
+      <label for='imageurl'>Image</label><br>
+      <input type='imageurl' name='imageurl' id='imageurl' required="true"><br>
+
+      <button type='submit'>Submit</button>
+    </form>
+  </div>
+
+  <div class="col-md-6">
+    <h1>All Venues</h1>
+    <ul>
+      <% @venues.each do |venue|%>
+      <p><a href="/venue/<%= venue.id() %>"><%= venue.name %></a></p>
+      <p><%= venue.address %></p>
+      <img class="venue_logo" style="width: 150px;" src="<%=venue.imageurl%>"/>
+      <%end%>
+    </ul>
+  </div>
+</div>
