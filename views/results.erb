@@ -1,0 +1,12 @@
+<% if @foundEvents.any? %>
+  <% @foundEvents.each do |event| %>
+    <li><b><%= event.name%></li>
+  <% end %>
+<%end%>
+
+<% if @foundOffers.any? %>
+  <h2>Offers</h2>
+  <% @foundOffers.each do |offer| %>
+    <li><b><%= offer.price%></li>
+  <% end %>
+<%end%>

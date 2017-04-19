@@ -148,6 +148,22 @@ delete("/category/:id") do
   redirect("/")
 end
 
+get("/user") do
+  erb(:user)
+end
+
+get("/search") do
+  searchTerm= params.fetch("search")
+  @foundEvents = Event.where("name = ?",searchTerm)
+  @foundEvents.each do |event|
+    @foundOffers=Offers.where("event_id = ?", event.id)
+  end
+  @foundArtists = Artist.where("name = ?",searchTerm)
+  erb(:results)
+end
+
+
+
 #offers many-many table
 get('/offer') do
   @offers = Offer.all()
@@ -155,9 +171,10 @@ get('/offer') do
   end 
 
 post("/offer") do
-    
+
     event_id = params.fetch("event_id").to_i()
     price = params.fetch("price").to_i()
+
     bs = params.fetch("offer")
    
     if bs == "true"
