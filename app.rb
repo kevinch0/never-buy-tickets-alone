@@ -147,3 +147,16 @@ delete("/category/:id") do
   category_to_be_deleted.destroy()
   redirect("/")
 end
+
+#offers many-many table
+post("/offer") do
+    
+    event_id = params.fetch("event_id").to_i()
+    price = params.fetch("price").to_i()
+    
+    @offer = Offer.new({:event_id => event_id, :user_id => 1, :price => price, :type =>false})
+    @offer.save()
+    @offers=Offer.all()
+    erb(:offer)
+  end
+
