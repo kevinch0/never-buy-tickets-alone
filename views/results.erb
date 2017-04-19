@@ -1,10 +1,3 @@
-<% if @foundOffers.any? %>
-  <h2>Offers</h2>
-  <% @foundOffers.each do |offer| %>
-    <h3><b><%= offer.event.name%></h3>
-    <li><b><%= offer.price%></li>
-  <% end %>
-<%end%>
 
 <% if @foundOffers.any? %>
   <ul>

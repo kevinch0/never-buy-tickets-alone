@@ -1,12 +1,33 @@
 require('pry')
 require("bundler/setup")
 require('pg')
+require('bcrypt')
 
 DB = PG.connect({:dbname => "ticket_development"})
   Bundler.require(:default)
 
   Dir[File.dirname(__FILE__) + '/lib/*.rb'].each { |file| require file }
   also_reload("lib/*.rb")
+
+  enable :sessions
+
+userTable = {}
+
+helpers do
+
+  def login?
+    if session[:username].nil?
+      return false
+    else
+      return true
+    end
+  end
+
+  def username
+    return session[:username]
+  end
+
+end
 
 get ('/') do
   @categories = Category.all()
@@ -15,6 +36,74 @@ get ('/') do
   @artists=Artist.all()
   @offers=Offer.all()
   erb(:index)
+end
+
+get "/signup" do
+  erb(:signup)
+end
+
+post('/signup') do
+  password = params.fetch('password')
+  username = params.fetch('username')
+
+  password_salt = BCrypt::Engine.generate_salt
+  password_hash = BCrypt::Engine.hash_secret(params[:password], password_salt)
+  User.create({:username => username, :password => password_hash, :salt => password_salt})
+
+  session[:username] = params[:username]
+  if params[:username] == "admin"
+    redirect "/"
+  else
+    redirect "user"
+  end
+end
+
+get "/login" do
+  erb(:signin)
+end
+
+post "/login" do
+  username= params.fetch('username')
+  if (User.find_by username: username) != nil
+    user = User.find_by username: username
+    if user.password == BCrypt::Engine.hash_secret(params[:password], user.salt)
+      session[:username] = params[:username]
+      if params[:username] == "admin"
+        redirect "/"
+      else
+        redirect "user"
+      end
+    end
+  end
+  erb(:signin)
+end
+
+get "/logout" do
+  session[:username] = nil
+  redirect "/login"
+end
+
+get('/events') do
+  @categories = Category.all()
+  @events= Event.all()
+  @venues= Venue.all()
+  @artists=Artist.all()
+  erb(:events)
+end
+
+get('/artists') do
+  @artists=Artist.all()
+  erb(:artists)
+end
+
+get('/venues') do
+  @venues=Venue.all()
+  erb(:venues)
+end
+
+get('/categories') do
+  @categories=Category.all()
+  erb(:categories)
 end
 
 post ('/event') do
@@ -157,6 +246,11 @@ delete("/category/:id") do
 end
 
 get("/user") do
+  @categories = Category.all()
+  @events= Event.all()
+  @venues= Venue.all()
+  @artists=Artist.all()
+  @offers=Offer.all()
   erb(:user)
 end
 
@@ -164,18 +258,17 @@ get("/search") do
   searchTerm= params.fetch("search")
   @foundEvents = Event.where("name = ?",searchTerm)
   @foundArtists = Artist.where("name = ?",searchTerm)
-
   @foundArtists.each do |artist|
     @foundArtistEvents=ArtistsEvent.where("artist_id= ?",artist.id)
     @foundArtistEvents.each do |event|
       @foundOffers=Offer.where("event_id= ?",event.event_id)
+
     end
   end
-
   @foundEvents.each do |event|
     @foundOffers=Offer.where("event_id= ?",event.id)
+    binding.pry
   end
-
   erb(:results)
 end
 

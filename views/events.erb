@@ -1,0 +1,55 @@
+<div class="row">
+  <div class="col-md-6">
+    <h3>Create Event</h3>
+    <form action='/event' method='post'>
+      <label for='name'>Name</label><br>
+      <input type='text' name='name' id='name' required="true"><br>
+      <label for='date'>Date</label><br>
+      <input type='date' name='date' id='name' required="true"><br>
+      <label for="duration">Duration (hours)</label><br>
+      <input type="number" name="duration" id="duration" required="true"><br>
+      <label for='imageurl'>Image URL</label><br>
+      <input type='imageurl' name='imageurl' id='name' required="true"><br>
+
+      <label for="artist_id">Select an Artist</label>
+      <select id="artist_id" name="artist_id" type="int" required="true">
+        <% @artists.each() do |artist| %>
+          <option value="<%= artist.id()%>">
+            <%= artist.name() %>
+          </option>
+        <% end %>
+      </select>
+
+      <label for="category_id">Select a Category</label>
+      <select id="category_id" name="category_id" type="int" required="true">
+        <% @categories.each() do |category| %>
+          <option value="<%= category.id()%>">
+            <%= category.name() %>
+          </option>
+        <% end %>
+      </select>
+
+      <label for="venue_id">Select a Venue</label>
+      <select id="venue_id" name="venue_id" type="int" required="true">
+        <% @venues.each() do |venue| %>
+          <option value="<%= venue.id()%>">
+            <%= venue.name() %>
+          </option>
+        <% end %>
+      </select>
+
+      <button type='submit'>Submit</button>
+    </form>
+  </div>
+  <div class="col-md-6">
+    <h1>All Events</h1>
+    <ul>
+      <% @events.each do |event|%>
+      <p><a href="/event/<%= event.id() %>"><%=event.name%></a></p>
+      <p><%=event.date%></p>
+      <img class="event_logo" style="width: 150px;" src="<%=event.imageurl%>"/>
+      <%end%>
+    </ul>
+    <hr>
+  </div>
+</div>
