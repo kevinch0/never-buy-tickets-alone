@@ -149,14 +149,35 @@ delete("/category/:id") do
 end
 
 #offers many-many table
+get('/offer') do
+  @offers = Offer.all()
+  erb(:offer)
+  end 
+
 post("/offer") do
     
     event_id = params.fetch("event_id").to_i()
     price = params.fetch("price").to_i()
+    bs = params.fetch("offer")
+   
+    if bs == "true"
+     @offer = Offer.new({:event_id => event_id, :user_id => 1, :price => price, :buy_sell => true})
+   else
+    @offer = Offer.new({:event_id => event_id, :user_id => 1, :price => price, :buy_sell => false})
+    end
     
-    @offer = Offer.new({:event_id => event_id, :user_id => 1, :price => price, :type =>false})
     @offer.save()
-    @offers=Offer.all()
+    @offers = Offer.all()
     erb(:offer)
   end
+
+  get('/offer/:id') do
+  @offer=Offer.find(Integer(params.fetch('id')))
+  erb(:offer_info)
+end
+#  delete("/offer") do
+#     @offer = Offer.find(params.fetch("id").to_i())
+#     @offer.delete()
+#     redirect ("/")
+# end
 
