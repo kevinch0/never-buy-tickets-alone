@@ -1,5 +1,5 @@
 <form action='/search' method = 'get'>
-  <input type='text' name="search" id ="search">
+  <input type='text' name="search" id ="search" placeholder="Search by event or artist name">
   <button type='submit'>Submit</button>
 </form>
 
@@ -28,3 +28,9 @@
     </form>
   </div>
 </div>
+
+<% @categories.each() do |category| %>
+  <form action='/categorysearch' method='get'>
+    <button class="btn" type="submit" value="<%=category.id()%>" name="categorysearch"><%= category.name() %></button>
+  </form>
+<% end %>

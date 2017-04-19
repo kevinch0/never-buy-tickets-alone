@@ -258,6 +258,7 @@ get("/search") do
   searchTerm= params.fetch("search")
   @foundEvents = Event.where("name = ?",searchTerm)
   @foundArtists = Artist.where("name = ?",searchTerm)
+  @foundOffers = []
   @foundArtists.each do |artist|
     @foundArtistEvents=ArtistsEvent.where("artist_id= ?",artist.id)
     @foundArtistEvents.each do |event|
@@ -266,8 +267,8 @@ get("/search") do
     end
   end
   @foundEvents.each do |event|
+    @foundOffers = []
     @foundOffers=Offer.where("event_id= ?",event.id)
-    binding.pry
   end
   erb(:results)
 end
@@ -276,7 +277,18 @@ end
 get('/offer') do
   @offers = Offer.all()
   erb(:offer)
+end
+
+get ('/categorysearch') do
+  categoryId = params.fetch('categorysearch')
+  chosenCategory = Category.find(categoryId)
+  @foundOffers = []
+  @foundEvents = Event.where("category_id = ?",categoryId)
+  @foundEvents.each do |event|
+    @foundOffers=Offer.where("event_id= ?",event.id)
   end
+  erb(:results)
+end
 
 post("/offer") do
 
