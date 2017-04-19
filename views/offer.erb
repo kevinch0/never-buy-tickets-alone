@@ -1,13 +1,44 @@
 <ul>
+  <% @offers.each() do |offer| %>
+  	<div class="row">
+  
+  		<div class="panel panel-default">
+				<div class="panel-body">
 
-     <% @offers.each() do |offer| %>
-       <li><%= offer.event_id %></li>
-       <li><%= offer.price %></li>
-     <% end %>
-   </ul>
+  				
+  				<div class="col-md-2">
+  					<li><%= offer.event.name %></li>
+  				</div>
+	      		<div class="col-md-2">
+	      			<li><%= offer.price %></li>
+	      		</div>
+	      		<div class="col-md-3">
+	        		<li>
+	        		<img style="width: 150px;" src="<%= offer.event.imageurl %>">
+	        		</li>
+	        	</div>
+	      		<div class="col-md-2">
+	      			<% if offer.buy_sell %>
+	      				<li>Sell</li>
+	      			<% else %>
+	      				<li>Buy</li>
+	      			<% end %>
+	      		</div>
+	      		
+	        	<div class="col-md-3">
+  					<li>
+	  					<form action="/offer" method="post">
+	  						<input type="hidden" name="_method" value="delete">
+	  						<button type="submit" class="btn btn-danger"> Delete
+	  						</button>
+						</form>
+					</li>
+  				</div>
+    		</div> 
+    	</div>
+    </div>    
+  <% end %>
+</ul>
 
-      <% @offers.each() do |offer| %>
-        <li><%= offer.event_id %></li>
-        <li><%= offer.price %></li>
-      <% end %>
-    </ul>
+
+     
