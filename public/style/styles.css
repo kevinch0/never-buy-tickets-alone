@@ -21,7 +21,7 @@ ul{
 	border-radius: 5px;
 	color:#f63;
 	font-family: 'Open Sans', sans-serif;
-	
+
 
 }
 #search{
@@ -38,4 +38,9 @@ ul{
 .search-text{
 	font-size: 35px;
 	letter-spacing: 2px;
+}
+
+.categories {
+display: inline;
+
 }

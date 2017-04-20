@@ -11,7 +11,7 @@ DB = PG.connect({:dbname => "ticket_development"})
 
   enable :sessions
 
-userTable = {}
+# userTable = {}
 
 helpers do
 
@@ -45,10 +45,12 @@ end
 post('/signup') do
   password = params.fetch('password')
   username = params.fetch('username')
-
+  email = params.fetch('email')
+  phonenumber = params.fetch('phonenumber')
   password_salt = BCrypt::Engine.generate_salt
   password_hash = BCrypt::Engine.hash_secret(params[:password], password_salt)
-  User.create({:username => username, :password => password_hash, :salt => password_salt})
+  User.create({:username => username, :password => password_hash, :salt => password_salt, :email => email, :phone_number => phonenumber})
+  binding.pry
 
   session[:username] = params[:username]
   if params[:username] == "admin"
@@ -251,6 +253,7 @@ get("/user") do
   @venues= Venue.all()
   @artists=Artist.all()
   @offers=Offer.all()
+  @color = "%06x" % (rand * 0xffffff)
   erb(:user)
 end
 
@@ -305,7 +308,7 @@ post("/offer") do
 
     @offer.save()
     @offers = Offer.all()
-    erb(:offer)
+    redirect("/user")
   end
 
   get('/offer/:id') do
@@ -315,8 +318,13 @@ end
 
 
 delete("/offer/:id") do
-    @offer = Offer.find(params.fetch("id").to_i())  
+    @offer = Offer.find(params.fetch("id").to_i())
     @offer.delete()
     redirect ('/offer')
 end
 
+post("/user_contact") do
+  @user = User.find(params.fetch('user_id').to_i())
+  @offer = Offer.find(params.fetch('offer_id').to_i())
+  erb(:user_contact)
+end
