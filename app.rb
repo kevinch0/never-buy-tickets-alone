@@ -2,40 +2,77 @@ require('pry')
 require("bundler/setup")
 require('pg')
 require('bcrypt')
+require('rickshaw')
+require('rack')
+require "sinatra/reloader"
 
 DB = PG.connect({:dbname => "ticket_development"})
   Bundler.require(:default)
 
   Dir[File.dirname(__FILE__) + '/lib/*.rb'].each { |file| require file }
   also_reload("lib/*.rb")
-
-  enable :sessions
+  # jeff commented out old codes
+  # enable :sessions
 
 # userTable = {}
 
-helpers do
+# jeff commented out old codes
+# helpers do
+#
+#   def login?
+#     if session[:username].nil?
+#       return false
+#     else
+#       return true
+#     end
+#   end
+#
+#   def username
+#     return session[:username]
+#   end
+#
+# end
 
-  def login?
-    if session[:username].nil?
-      return false
-    else
-      return true
-    end
-  end
-
-  def username
-    return session[:username]
-  end
-
+# authentication from last neca code deck
+configure do
+  enable :sessions
 end
 
-get ('/') do
+register do
+  def auth (type)
+    condition do
+      redirect "/" unless send("is_#{type}?")
+    end
+  end
+end
+
+helpers do
+  def is_user?
+    @user != nil
+  end
+end
+
+before do
+  if session[:id] == nil
+    @user = nil
+  else
+    @user = User.find(session[:id])
+  end
+end
+
+# end of code deck transfer
+
+get('/') do
+  erb(:index)
+end
+
+get ('/admin') do
   @categories = Category.all()
   @events= Event.all()
   @venues= Venue.all()
   @artists=Artist.all()
   @offers=Offer.all()
-  erb(:index)
+  erb(:admin)
 end
 
 get "/signup" do
@@ -43,46 +80,84 @@ get "/signup" do
 end
 
 post('/signup') do
-  password = params.fetch('password')
+  password = params.fetch('password').to_sha1()
   username = params.fetch('username')
-  email = params.fetch('email')
-  phonenumber = params.fetch('phonenumber')
-  password_salt = BCrypt::Engine.generate_salt
-  password_hash = BCrypt::Engine.hash_secret(params[:password], password_salt)
-  User.create({:username => username, :password => password_hash, :salt => password_salt, :email => email, :phone_number => phonenumber})
-  binding.pry
-
-  session[:username] = params[:username]
-  if params[:username] == "admin"
-    redirect "/"
+  # email = params.fetch('email')
+  # phonenumber = params.fetch('phonenumber')
+  # password_salt = BCrypt::Engine.generate_salt
+  # password_hash = BCrypt::Engine.hash_secret(params[:password], password_salt)
+  # User.create({:username => username, :password => password_hash, :salt => password_salt, :email => email, :phone_number => phonenumber})
+  # binding.pry
+  #
+  # session[:username] = params[:username]
+  # if params[:username] == "admin"
+  #   redirect "/"
+  # password_salt = BCrypt::Engine.generate_salt
+  # password_hash = BCrypt::Engine.hash_secret(params[:password], password_salt)
+  # User.create({:username => username, :password => password_hash, :salt => password_salt})
+  @user = User.new({:username => username, :password => password})
+  if @user.save()
+    session[:id] = @user.id
+    redirect ('/admin') if username == "admin"
+    redirect ('/user')
   else
-    redirect "user"
+    erb(:errors)
   end
+  #commented out old codes by jeff
+
+  # session[:username] = params[:username]
+  # if params[:username] == nil
+  #   redirect "/"
+  # elsif params[:username] == "admin"
+  #   redirect "/admin"
+  # else
+  #   redirect "/user"
+  # end
 end
 
 get "/login" do
-  erb(:signin)
+  erb(:login)
 end
 
 post "/login" do
   username= params.fetch('username')
-  if (User.find_by username: username) != nil
-    user = User.find_by username: username
-    if user.password == BCrypt::Engine.hash_secret(params[:password], user.salt)
-      session[:username] = params[:username]
-      if params[:username] == "admin"
-        redirect "/"
-      else
-        redirect "user"
-      end
-    end
+  password = params.fetch("password").to_sha1()
+  @user = User.find_by(username: username, password: password)
+
+  if @user != nil
+    session[:id] = @user.id()
+    redirect ('/admin') if username == "admin"
+    redirect ('/user')
+  else
+    redirect ('/login')
   end
-  erb(:signin)
+end
+  # if (User.find_by username: username) != nil
+  #   user = User.find_by username: username
+  #   if user.password == BCrypt::Engine.hash_secret(params[:password], user.salt)
+  #     session[:username] = params[:username]
+  #     if params[:username] == "admin"
+  #       redirect "/admin"
+  #     else
+  #       redirect "/user"
+  #     end
+  #   end
+  # end
+  # erb(:login)
+# end
+
+get "/user", :auth => :user do
+  @categories = Category.all()
+  @events= Event.all()
+  @venues= Venue.all()
+  @artists=Artist.all()
+  @offers=Offer.all()
+  erb(:user)
 end
 
 get "/logout" do
-  session[:username] = nil
-  redirect "/login"
+  session.clear
+  redirect "/"
 end
 
 get('/events') do
@@ -122,7 +197,7 @@ post ('/event') do
   artist = Artist.find(artist_id)
   ArtistsEvent.create(event: event, artist: artist)
   if event.save()
-    redirect ('/')
+    redirect ('/admin')
   else
     erb(:errors)
   end
@@ -147,14 +222,14 @@ delete("/event/:id") do
   event_id=Integer(params.fetch("id"))
   event_to_be_deleted= Event.find(event_id)
   event_to_be_deleted.destroy()
-  redirect("/")
+  redirect("/admin")
 end
 
 post ('/artist') do
   name = params.fetch('name')
   artist = Artist.create({:name => name})
   if artist.save()
-    redirect ('/')
+    redirect ('/admin')
   else
     erb(:errors)
   end
@@ -178,7 +253,7 @@ delete("/artist/:id") do
   artist_id=Integer(params.fetch("id"))
   artist_to_be_deleted= Artist.find(artist_id)
   artist_to_be_deleted.destroy()
-  redirect("/")
+  redirect("/admin")
 end
 
 post ('/venue') do
@@ -187,7 +262,7 @@ post ('/venue') do
   imageurl = params.fetch('imageurl')
   venue = Venue.create({:name => name, :address => address, :imageurl => imageurl})
   if venue.save()
-    redirect ('/')
+    redirect ('/admin')
   else
     erb(:errors)
   end
@@ -213,14 +288,14 @@ delete("/venue/:id") do
   venue_id=Integer(params.fetch("id"))
   venue_to_be_deleted= Venue.find(venue_id)
   venue_to_be_deleted.destroy()
-  redirect("/")
+  redirect("/admin")
 end
 
 post ('/category') do
   name = params.fetch('name')
   category = Category.create({:name => name})
   if category.save()
-    redirect ('/')
+    redirect ('/admin')
   else
     erb(:errors)
   end
@@ -244,7 +319,7 @@ delete("/category/:id") do
   category_id=Integer(params.fetch("id"))
   category_to_be_deleted= Category.find(category_id)
   category_to_be_deleted.destroy()
-  redirect("/")
+  redirect("/admin")
 end
 
 get("/user") do
