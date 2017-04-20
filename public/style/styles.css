@@ -21,9 +21,8 @@ ul{
 	border-radius: 5px;
 	color:#f63;
 	font-family: 'Open Sans', sans-serif;
-
-
 }
+
 #search{
 	width:500px;
 	height:30px;
@@ -92,6 +91,17 @@ input[type="text"] {
 
 #block_login {
 	margin: 15% 0 15% 0;
+}
+
+#logo {
+	width: 100px;
+	height: 80px;
+}
+
+#name_user {
+	font-size: 16px;
+	padding-top: 15px;
+	background: trasparent;
 }
 
 /* for fullscreen video on index page */
