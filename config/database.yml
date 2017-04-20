@@ -5,6 +5,3 @@ development:
 test:
   adapter: postgresql
   database: ticket_test
-
-production:
-  url: <%= ENV['ticket_development'] %>
