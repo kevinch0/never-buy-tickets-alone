@@ -315,8 +315,7 @@ end
 
 
 delete("/offer/:id") do
-    @offer = Offer.find(params.fetch("id").to_i())  
+    @offer = Offer.find(params.fetch("id").to_i())
     @offer.delete()
     redirect ('/offer')
 end
-
