@@ -66,12 +66,13 @@ get('/') do
   erb(:index)
 end
 
-get ('/admin') do
+get '/admin', :auth => :user do
   @categories = Category.all()
   @events= Event.all()
   @venues= Venue.all()
   @artists=Artist.all()
   @offers=Offer.all()
+  redirect ('/user') if @user.username !="admin"
   erb(:admin)
 end
 
@@ -152,6 +153,7 @@ get "/user", :auth => :user do
   @venues= Venue.all()
   @artists=Artist.all()
   @offers=Offer.all()
+  redirect ('/admin') if @user.username == "admin"
   erb(:user)
 end
 
