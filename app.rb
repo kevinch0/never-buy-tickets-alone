@@ -388,7 +388,6 @@ post("/offer") do
 
   get('/offer/:id') do
     @offer=Offer.find(Integer(params.fetch('id')))
-    binding.pry
     erb(:offer_info)
   end
 
@@ -396,7 +395,7 @@ post("/offer") do
 delete("/offer/:id") do
     @offer = Offer.find(params.fetch("id").to_i())
     @offer.delete()
-    redirect ('/offer')
+    redirect ('/user')
 end
 
 post("/user_contact") do
