@@ -15,16 +15,23 @@
           <li class="list-group-item">Event <%= @offer.event.name %></li>
           <li></li>
           <li class="list-group-item">Price <%=@offer.price %></li>
+
+      <!-- if @user is equal to user who created this offer, then allow delete -->
+
+      <% if @user == @offer.user%>
           <li class="list-group-item">
             <form action="/offer/<%= @offer.id() %>" method="post">
               <input name="_method" type="hidden" value="delete">
               <button type="submit" class="btn btn-danger">Delete </button>
             </form>
           </li>
-          
+      <% end %>
+
+      <!--  end delete -->
+
         </ul>
       </div>
-     
+
   </div>
   </div>
 </div>

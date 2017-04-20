@@ -101,7 +101,7 @@ post('/signup') do
     redirect ('/admin') if username == "admin"
     redirect ('/user')
   else
-    erb(:errors)
+    redirect ('signup')
   end
   #commented out old codes by jeff
 
@@ -372,13 +372,13 @@ post("/offer") do
 
     event_id = params.fetch("event_id").to_i()
     price = params.fetch("price").to_i()
-
+    user = @user
     bs = params.fetch("offer")
 
     if bs == "true"
-     @offer = Offer.new({:event_id => event_id, :user_id => 1, :price => price, :buy_sell => true})
-   else
-    @offer = Offer.new({:event_id => event_id, :user_id => 1, :price => price, :buy_sell => false})
+      @offer = Offer.new({:event_id => event_id, :user_id => @user.id(), :price => price, :buy_sell => true})
+    else
+      @offer = Offer.new({:event_id => event_id, :user_id => @user.id(), :price => price, :buy_sell => false})
     end
 
     @offer.save()
@@ -387,9 +387,10 @@ post("/offer") do
   end
 
   get('/offer/:id') do
-  @offer=Offer.find(Integer(params.fetch('id')))
-  erb(:offer_info)
-end
+    @offer=Offer.find(Integer(params.fetch('id')))
+    binding.pry
+    erb(:offer_info)
+  end
 
 
 delete("/offer/:id") do
