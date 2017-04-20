@@ -82,6 +82,15 @@ input[type="text"] {
     text-align: center;
 }
 
+input[type="password"] {
+    background: rgba(0,0,0,0.4);
+    margin: 5px;
+    font-size: 28px;
+    border: none;
+    color:white;
+    text-align: center;
+}
+
 #btn_signup, #btn_login {
   background-color: rgba(0,0,0,0.4);
   text-decoration: none;
