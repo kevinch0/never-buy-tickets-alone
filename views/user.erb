@@ -22,11 +22,11 @@
   <h2><span class="search-text">Find Your Next Event</span></h2>
   <form action='/search' method = 'get'>
     <input type='text' name="search" id ="search" placeholder="Search by event or artist name" width="50">
-    <button type='submit' class="search-btn">Search</button>
+    <button type='submit' class="btn search-btn">Search</button>
   </form>
   <% @categories.each() do |category| %>
     <form action='/categorysearch' method='get' class="categories">
-      <button  class="btn-info" type="submit" value="<%=category.id()%>" name="categorysearch"><%= category.name() %></button>
+      <button  class="btn btn-info" type="submit" value="<%=category.id()%>" name="categorysearch"><%= category.name() %></button>
     </form>
  <% end %>
 </div>
@@ -34,7 +34,7 @@
 
 <div class="panel panel-default">
 
-  <div class="panel-heading">Panel heading without title</div>
+  <div class="panel-heading">Sell or Buy a Ticket to an Upcoming Event</div>
   <div class="panel-body">
     <form action="/offer" method="post">
       <label for="event_id">Select a Event</label>
