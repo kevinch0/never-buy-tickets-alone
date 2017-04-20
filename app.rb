@@ -399,7 +399,6 @@ delete("/offer/:id") do
 end
 
 post("/user_contact") do
-  @user = User.find(params.fetch('user_id').to_i())
   @offer = Offer.find(params.fetch('offer_id').to_i())
   erb(:user_contact)
 end
