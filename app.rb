@@ -5,7 +5,7 @@ require('rickshaw')
 require('rack')
 require "sinatra/reloader"
 
-DB = PG.connect({:dbname => "ticket_development"})
+# DB = PG.connect({:dbname => "ticket_development"})
 Bundler.require(:default)
 
 Dir[File.dirname(__FILE__) + '/lib/*.rb'].each { |file| require file }
