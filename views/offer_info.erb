@@ -1,39 +1,81 @@
-<br>
-<div class="col-md-8 col-md-offset-2">
-  <div class="panel panel-primary">
-  <div class="panel-heading">
-    <h3 class="panel-title"></h3>
-  </div>
-  <div class="panel-body">
-    <div class="row">
-      <div class="col-md-7 ">
-        <img style="width: 400px;" src="<%= @offer.event.imageurl %>">
+<head>
+   <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+   <title>Google Maps Geocoding Demo 1</title>
+   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCv4wMg8sE9-0TfMyw8paUY6Sn16uPuGPM&callback=initMap"
+           type="text/javascript"></script>
+</head>
+<body>
+  <br>
+  <div class="col-md-8 col-md-offset-2">
+    <div class="panel panel-primary">
+    <div class="panel-heading">
+      <h3 class="panel-title"></h3>
+    </div>
+    <div class="panel-body">
+      <div class="row">
+        <div class="col-md-7 ">
+          <img style="width: 400px;" src="<%= @offer.event.imageurl %>">
+        </div>
+
+        <div class="col-md-5">
+          <ul class="list-group">
+            <li class="list-group-item">Event <%= @offer.event.name %></li>
+            <li></li>
+            <li class="list-group-item">Price <%=@offer.price %></li>
+
+        <!-- if @user is equal to user who created this offer, then allow delete -->
+
+        <% if @user == @offer.user%>
+            <li class="list-group-item">
+              <form action="/offer/<%= @offer.id() %>" method="post">
+                <input name="_method" type="hidden" value="delete">
+                <button type="submit" class="btn btn-danger">Delete </button>
+              </form>
+            </li>
+        <% end %>
+
+        <!--  end delete -->
+
+          </ul>
+        </div>
+
+        </div>
       </div>
-
-      <div class="col-md-5">
-        <ul class="list-group">
-          <li class="list-group-item">Event <%= @offer.event.name %></li>
-          <li></li>
-          <li class="list-group-item">Price <%=@offer.price %></li>
-
-      <!-- if @user is equal to user who created this offer, then allow delete -->
-
-      <% if @user == @offer.user%>
-          <li class="list-group-item">
-            <form action="/offer/<%= @offer.id() %>" method="post">
-              <input name="_method" type="hidden" value="delete">
-              <button type="submit" class="btn btn-danger">Delete </button>
-            </form>
-          </li>
-      <% end %>
-
-      <!--  end delete -->
-
-        </ul>
-      </div>
-
+    </div>
   </div>
-  </div>
-</div>
+  <br>
+  <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 
-</div>
+  <div class='container'>
+    <h1>Address: <%= @venue %></h1>
+    <div id="map" style="width: 900px; height: 500px; margin-left: 120px;"></div>
+  </div>
+
+  <br><br><br><br><br><br>
+
+  <script type="text/javascript">
+
+    var address = "<%= @venue %>";
+
+    var map = new google.maps.Map(document.getElementById('map'), {
+        mapTypeId: google.maps.MapTypeId.TERRAIN,
+        zoom: 15
+    });
+
+    var geocoder = new google.maps.Geocoder();
+
+    geocoder.geocode({
+       'address': address
+    },
+    function(results, status) {
+       if(status == google.maps.GeocoderStatus.OK) {
+          new google.maps.Marker({
+             position: results[0].geometry.location,
+             map: map
+          });
+          map.setCenter(results[0].geometry.location);
+       }
+    });
+
+  </script>
+</body>
