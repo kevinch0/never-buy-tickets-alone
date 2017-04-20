@@ -1,4 +1,3 @@
-require('pry')
 require("bundler/setup")
 require('pg')
 require('bcrypt')
@@ -7,10 +6,10 @@ require('rack')
 require "sinatra/reloader"
 
 DB = PG.connect({:dbname => "ticket_development"})
-  Bundler.require(:default)
+Bundler.require(:default)
 
-  Dir[File.dirname(__FILE__) + '/lib/*.rb'].each { |file| require file }
-  also_reload("lib/*.rb")
+Dir[File.dirname(__FILE__) + '/lib/*.rb'].each { |file| require file }
+also_reload("lib/*.rb")
   # jeff commented out old codes
   # enable :sessions
 
@@ -88,7 +87,6 @@ post('/signup') do
   # password_salt = BCrypt::Engine.generate_salt
   # password_hash = BCrypt::Engine.hash_secret(params[:password], password_salt)
   # User.create({:username => username, :password => password_hash, :salt => password_salt, :email => email, :phone_number => phonenumber})
-  # binding.pry
   #
   # session[:username] = params[:username]
   # if params[:username] == "admin"
