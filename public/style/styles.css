@@ -90,6 +90,10 @@ input[type="text"] {
   font-size: 28px;
 }
 
+#block_login {
+	margin: 20%;
+}
+
 /* for fullscreen video on index page */
 * { box-sizing: border-box; }
 .video-background {

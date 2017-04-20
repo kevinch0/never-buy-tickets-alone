@@ -101,7 +101,7 @@ post('/signup') do
     redirect ('/admin') if username == "admin"
     redirect ('/user')
   else
-    erb(:errors)
+    redirect ('signup')
   end
   #commented out old codes by jeff
 
