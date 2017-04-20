@@ -1,5 +1,6 @@
 <div class="jumbotron">
-  <!--  -->
+
+
 </div>
 <div class="searchbar">
   <h2><span class="search-text">Find Your Next Event</span></h2>
@@ -7,7 +8,13 @@
     <input type='text' name="search" id ="search" placeholder="Search by event or artist name" width="50">
     <button type='submit' class="search-btn">Search</button>
   </form>
+  <% @categories.each() do |category| %>
+    <form action='/categorysearch' method='get' class="categories">
+      <button  class="btn-info" type="submit" value="<%=category.id()%>" name="categorysearch"><%= category.name() %></button>
+    </form>
+ <% end %>
 </div>
+<br>
 
 <div class="panel panel-default">
 
@@ -34,9 +41,48 @@
     </form>
   </div>
 </div>
+<!-- offers start here -->
+<div>
+    <% @offers.each() do |offer| %>
 
-<% @categories.each() do |category| %>
-  <form action='/categorysearch' method='get'>
-    <button class="btn" type="submit" value="<%=category.id()%>" name="categorysearch"><%= category.name() %></button>
-  </form>
-<% end %>
+    		<div class="panel panel-default">
+  				<div class="panel-body">
+
+
+    				<div class="col-md-2">
+    					<%= offer.event.name %>
+    				</div>
+  	      		<div class="col-md-2">
+  	      			<%= offer.price %>
+  	      		</div>
+  	      		<div class="col-md-2">
+
+  	        		<img style="width: 150px;" src="<%= offer.event.imageurl %>">
+
+  	        	</div>
+  	      		<div class="col-md-2">
+                <form action='/user_contact' method='post'>
+                  <input type='hidden' value="<%=offer.user_id%>" name='user_id' id='user_id'>
+                  <input type='hidden' value="<%=offer.id%>" name='offer_id' id='offer_id'>
+
+  	      			  <button action='submit' class="btn btn-success">BUY</button>
+                </form>
+  	      		</div>
+  	      		<div class="col-md-2">
+  	      			<button class="btn btn-info"><a href="/offer/<%=offer.id()%>">View</a></button>
+  	      		</div>
+              <div class="col-md-2">
+                <%= offer.event.date() %>
+
+  	      		</div>
+
+      		</div>
+      	</div>
+    <% end %>
+
+</div>
+ <!-- <% @categories.each() do |category| %>
+   <form action='/categorysearch' method='get' class="categories">
+     <button class="btn" type="submit" value="<%=category.id()%>" name="categorysearch"><%= category.name() %></button>
+   </form>
+<% end %> -->
