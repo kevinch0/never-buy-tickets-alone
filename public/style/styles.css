@@ -21,9 +21,8 @@ ul{
 	border-radius: 5px;
 	color:#f63;
 	font-family: 'Open Sans', sans-serif;
-
-
 }
+
 #search{
 	width:500px;
 	height:30px;
@@ -33,6 +32,7 @@ ul{
 	background: #f6682f;
 	height: 30px;
 	width:90px;
+	margin-bottom: 15px;
 
 }
 .search-text{
@@ -91,7 +91,18 @@ input[type="text"] {
 }
 
 #block_login {
-	margin: 20%;
+	margin: 15% 0 15% 0;
+}
+
+#logo {
+	width: 100px;
+	height: 80px;
+}
+
+#name_user {
+	font-size: 16px;
+	padding-top: 15px;
+	background: trasparent;
 }
 
 /* for fullscreen video on index page */
@@ -105,10 +116,10 @@ input[type="text"] {
 .video-foreground,
 .video-background iframe {
   position: absolute;
-  top: 0;
+  top: -8%;
   left: 0;
   width: 100%;
-  height: 100%;
+  height: 116%;
   pointer-events: none;
 }
 #vidtop-content {
