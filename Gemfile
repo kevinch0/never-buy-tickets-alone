@@ -6,8 +6,12 @@ source("https://rubygems.org")
   gem("pg")
   gem("sinatra")
   gem('bcrypt')
+  gem("rickshaw")
+  gem('rack')
+
 
   group(:test) do
+    gem("shoulda-matchers")
     gem("rspec")
     gem("capybara")
     gem("pry")
