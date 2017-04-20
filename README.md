@@ -9,6 +9,7 @@ Step 2: Database setup instructions using psql and rake:
 
 1. In terminal, type rake db:create, to create database
 2. In terminal, type rake db:migrate, to create tables
+3. In terminal, type rake db:setup, to populate database
 
 Step 3: Deploying app on Local Host
 
