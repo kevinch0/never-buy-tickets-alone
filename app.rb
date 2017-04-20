@@ -388,7 +388,7 @@ post("/offer") do
 
   get('/offer/:id') do
     @offer=Offer.find(Integer(params.fetch('id')))
-    binding.pry
+    @venue = Venue.all().find(@offer.event.id).address()
     erb(:offer_info)
   end
 
