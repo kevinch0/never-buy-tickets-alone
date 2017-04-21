@@ -4,35 +4,14 @@ require('bcrypt')
 require('rickshaw')
 require('rack')
 require "sinatra/reloader"
+require('pry')
 
-# DB = PG.connect({:dbname => "ticket_development"})
 Bundler.require(:default)
 
 Dir[File.dirname(__FILE__) + '/lib/*.rb'].each { |file| require file }
 also_reload("lib/*.rb")
-  # jeff commented out old codes
-  # enable :sessions
 
-# userTable = {}
-
-# jeff commented out old codes
-# helpers do
-#
-#   def login?
-#     if session[:username].nil?
-#       return false
-#     else
-#       return true
-#     end
-#   end
-#
-#   def username
-#     return session[:username]
-#   end
-#
-# end
-
-# authentication from last neca code deck
+# authentication
 configure do
   enable :sessions
 end
@@ -59,7 +38,7 @@ before do
   end
 end
 
-# end of code deck transfer
+#main_pages
 
 get('/') do
   erb(:index)
@@ -82,18 +61,6 @@ end
 post('/signup') do
   password = params.fetch('password').to_sha1()
   username = params.fetch('username')
-  # email = params.fetch('email')
-  # phonenumber = params.fetch('phonenumber')
-  # password_salt = BCrypt::Engine.generate_salt
-  # password_hash = BCrypt::Engine.hash_secret(params[:password], password_salt)
-  # User.create({:username => username, :password => password_hash, :salt => password_salt, :email => email, :phone_number => phonenumber})
-  #
-  # session[:username] = params[:username]
-  # if params[:username] == "admin"
-  #   redirect "/"
-  # password_salt = BCrypt::Engine.generate_salt
-  # password_hash = BCrypt::Engine.hash_secret(params[:password], password_salt)
-  # User.create({:username => username, :password => password_hash, :salt => password_salt})
   @user = User.new({:username => username, :password => password})
   if @user.save()
     session[:id] = @user.id
@@ -102,16 +69,6 @@ post('/signup') do
   else
     redirect ('signup')
   end
-  #commented out old codes by jeff
-
-  # session[:username] = params[:username]
-  # if params[:username] == nil
-  #   redirect "/"
-  # elsif params[:username] == "admin"
-  #   redirect "/admin"
-  # else
-  #   redirect "/user"
-  # end
 end
 
 get "/login" do
@@ -131,19 +88,6 @@ post "/login" do
     redirect ('/login')
   end
 end
-  # if (User.find_by username: username) != nil
-  #   user = User.find_by username: username
-  #   if user.password == BCrypt::Engine.hash_secret(params[:password], user.salt)
-  #     session[:username] = params[:username]
-  #     if params[:username] == "admin"
-  #       redirect "/admin"
-  #     else
-  #       redirect "/user"
-  #     end
-  #   end
-  # end
-  # erb(:login)
-# end
 
 get "/user", :auth => :user do
   @categories = Category.all()
@@ -168,34 +112,29 @@ get('/events') do
   erb(:events)
 end
 
-get('/artists') do
-  @artists=Artist.all()
-  erb(:artists)
-end
-
-get('/venues') do
-  @venues=Venue.all()
-  erb(:venues)
-end
-
-get('/categories') do
-  @categories=Category.all()
-  erb(:categories)
-end
-
 post ('/event') do
   name = params.fetch('name')
   date = params.fetch('date')
   duration = params.fetch('duration')
   imageurl = params.fetch('imageurl')
-  category_id = Integer(params.fetch('category_id'))
-  category = Category.find(category_id)
-  venue_id = Integer(params.fetch('venue_id'))
-  venue = Venue.find(venue_id)
+  artist_name = params.fetch('artist_name')
+  category_name = params.fetch('category_name')
+  venue_name = params.fetch('venue_name')
+  yo = params.fetch('yo').to_i()
+  if yo==2
+    venue_image = params.fetch('venue_image')
+    venue_address = params.fetch('venue_address')
+  end
+  artist = Artist.where(:name => artist_name).first_or_create(:name => artist_name)
+
+  category = Category.where(:name => category_name).first_or_create(:name => category_name)
+
+  venue = Venue.where(:name => venue_name).first_or_create(:name => venue_name, :imageurl => venue_image, :address => venue_address)
+
   event = Event.create({:name => name, :date => date, :duration => duration, :imageurl => imageurl, :venue => venue, :category => category})
-  artist_id = Integer(params.fetch('artist_id'))
-  artist = Artist.find(artist_id)
+
   ArtistsEvent.create(event: event, artist: artist)
+
   if event.save()
     redirect ('/admin')
   else
@@ -225,16 +164,6 @@ delete("/event/:id") do
   redirect("/admin")
 end
 
-post ('/artist') do
-  name = params.fetch('name')
-  artist = Artist.create({:name => name})
-  if artist.save()
-    redirect ('/admin')
-  else
-    erb(:errors)
-  end
-end
-
 get('/artist/:id') do
   @artist=Artist.find(Integer(params.fetch('id')))
   erb(:artist)
@@ -254,18 +183,6 @@ delete("/artist/:id") do
   artist_to_be_deleted= Artist.find(artist_id)
   artist_to_be_deleted.destroy()
   redirect("/admin")
-end
-
-post ('/venue') do
-  name = params.fetch('name')
-  address = params.fetch('address')
-  imageurl = params.fetch('imageurl')
-  venue = Venue.create({:name => name, :address => address, :imageurl => imageurl})
-  if venue.save()
-    redirect ('/admin')
-  else
-    erb(:errors)
-  end
 end
 
 get('/venue/:id') do
@@ -289,16 +206,6 @@ delete("/venue/:id") do
   venue_to_be_deleted= Venue.find(venue_id)
   venue_to_be_deleted.destroy()
   redirect("/admin")
-end
-
-post ('/category') do
-  name = params.fetch('name')
-  category = Category.create({:name => name})
-  if category.save()
-    redirect ('/admin')
-  else
-    erb(:errors)
-  end
 end
 
 get('/category/:id') do
@@ -333,9 +240,9 @@ get("/user") do
 end
 
 get("/search") do
-  searchTerm= params.fetch("search")
-  @foundEvents = Event.where("name = ?",searchTerm)
-  @foundArtists = Artist.where("name = ?",searchTerm)
+  searchTerm= params.fetch("search").downcase
+  @foundEvents = Event.where("name LIKE ?", "%#{searchTerm}%")
+  @foundArtists = Artist.where("name = ?", "%#{searchTerm}%")
   @foundOffers = []
   @foundArtists.each do |artist|
     @foundArtistEvents=ArtistsEvent.where("artist_id= ?",artist.id)

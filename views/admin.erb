@@ -1,3 +1,9 @@
+
+<!-- <body id="admin_page"> -->
+
+<div id="admin_background" class="image-background"></div>
+
+
 <nav class="navbar navbar-inverse navbar-fixed-top">
   <div class="container-fluid">
   <div class="navbar-header">
@@ -10,135 +16,90 @@
     <ul class="nav navbar-nav navbar-right">
         <li id="name_user"><a href="/logout">Logout</a></li>
     </ul>
-  </div><!--/.nav-collapse -->
+  </div>
   </div>
 </nav>
 
+<!-- Create Event -->
 <div class="row">
-  <div class="col-md-6">
-    <h3>Create Event</h3>
+  <div id="admin_event_left" class="col-md-6">
+    <h2 id="title_block">Create Event</h3><hr><br>
     <form action='/event' method='post'>
-      <label for='name'>Name</label><br>
-      <input type='text' name='name' id='name' required="true"><br>
-      <label for='date'>Date</label><br>
-      <input type='date' name='date' id='name' required="true"><br>
-      <label for="duration">Duration (hours)</label><br>
-      <input type="number" name="duration" id="duration" required="true"><br>
-      <label for='imageurl'>Image URL</label><br>
-      <input type='imageurl' name='imageurl' id='name' required="true"><br>
+      <input type='text' name='name' id='btn_admin' required="true" placeholder="name"><br>
+      <input type='date' name='date' id='btn_date' required="true"><br>
+      <input type="number" name="duration" id="btn_admin" required="true" placeholder="duration(hours)"><br>
+      <input type='imageurl' name='imageurl' id='btn_admin' required="true" placeholder="event poster URL"><br>
 
-      <label for="artist_id">Select an Artist</label>
-      <select id="artist_id" name="artist_id" type="int" required="true">
+      <select id="btn_admin" class="add_field_button" name="artist_name" type="int" required="true">
+        <option id='placeholder_color btn_admin' value="">Select an Artist</option>
         <% @artists.each() do |artist| %>
-          <option value="<%= artist.id()%>">
+          <option value="<%= artist.name%>">
             <%= artist.name() %>
           </option>
         <% end %>
-      </select>
+        <option type="text" id='placeholder_color btn_admin' value="Add an Artist">Add an Artist</option>
 
-      <label for="category_id">Select a Category</label>
-      <select id="category_id" name="category_id" type="int" required="true">
+      </select><br>
+
+      <div class="input_fields_wrap"></div>
+
+      <select id="btn_admin" class="add_field_category" name="category_name" type="int" required="true">
+        <option id='placeholder_color btn_admin' value="">Select a Category</option>
         <% @categories.each() do |category| %>
-          <option value="<%= category.id()%>">
+          <option value="<%= category.name%>">
             <%= category.name() %>
           </option>
         <% end %>
+        <option type="text" id='placeholder_color btn_admin' value="Add a Category">Add a Category</option>
       </select>
 
-      <label for="venue_id">Select a Venue</label>
-      <select id="venue_id" name="venue_id" type="int" required="true">
+      <div class="input_fields_category_wrap"></div>
+
+
+      <select id="btn_admin" class="add_field_venue" name="venue_name" type="int" required="true">
+        <option id='placeholder_color btn_admin' value="">Select a Venue</option>
         <% @venues.each() do |venue| %>
-          <option value="<%= venue.id()%>">
+          <option value="<%= venue.name%>">
             <%= venue.name() %>
           </option>
+
         <% end %>
+      <option type="text" id='btn_admin' value="Add a Venue">Add a Venue</option>
       </select>
 
-      <button type='submit'>Submit</button>
+
+      <div class="input_fields_venue_wrap">
+          <input type="hidden" name="yo" id="yo" value=1>
+      </div>
+
+      <button id="btn_login" type='submit'>Submit</button>
     </form>
   </div>
-  <div class="col-md-6">
-    <h1>All Events</h1>
-    <ul>
+
+<!-- List All Events -->
+
+  <div id="admin_event_right" class="col-md-6">
+    <h2 id="title_block">All Events</h1><hr><br><br>
+    <ul id="event_scroller">
       <% @events.each do |event|%>
-      <p><a href="/event/<%= event.id() %>"><%=event.name%></a></p>
-      <p><%=event.date%></p>
-      <img class="event_logo" style="width: 150px;" src="<%=event.imageurl%>"/>
-      <%end%>
-    </ul>
-    <hr>
-  </div>
-</div>
-
-<div class="row">
-  <div class="col-md-6">
-    <h3>Create Artist</h3>
-    <form action='/artist' method='post'>
-      <label for='name'>Name</label><br>
-      <input type='text' name='name' id='name' required="true"><br>
-      <button type='submit'>Submit</button>
-    </form>
-  </div>
-
-  <div class="col-md-6">
-    <h1>All artists</h1>
-    <ul>
-      <% @artists.each do |artist|%>
-      <p><a href="/artist/<%= artist.id() %>"><%= artist.name %></a></p>
+        <div id="event_tile">
+          <a href="/event/<%= event.id() %>">
+            <div id="event_logo">
+              <img id="image_logo" src="<%=event.imageurl%>" />
+            </div>
+            <div id="caption">
+              <p><%=event.date%></p>
+              <p><%=event.name%></p>
+            </div>
+          </a>
+        </div>
       <%end%>
     </ul>
   </div>
 </div>
-
-<div class="row">
-  <div class="col-md-6">
-    <h3>Create Venue</h3>
-    <form action='/venue' method='post'>
-      <label for='name'>Name</label><br>
-      <input type='text' name='name' id='name' required="true"><br>
-
-      <label for='address'>Address</label><br>
-      <input type='address' name='address' id='address' required="true"><br>
-
-      <label for='imageurl'>Image</label><br>
-      <input type='imageurl' name='imageurl' id='imageurl' required="true"><br>
-
-      <button type='submit'>Submit</button>
-    </form>
-  </div>
-
-  <div class="col-md-6">
-    <h1>All Venues</h1>
-    <ul>
-      <% @venues.each do |venue|%>
-      <p><a href="/venue/<%= venue.id() %>"><%= venue.name %></a></p>
-      <p><%= venue.address %></p>
-      <img class="venue_logo" style="width: 150px;" src="<%=venue.imageurl%>"/>
-      <%end%>
-    </ul>
-  </div>
-</div>
-
-<div class="row">
-  <div class="col-md-6">
-    <h3>Create Category</h3>
-    <form action='/category' method='post'>
-      <label for='name'>Name</label><br>
-      <input type='text' name='name' id='name' required="true"><br>
-
-      <button type='submit'>Submit</button>
-    </form>
-  </div>
-
-
-  <div class="col-md-6">
-    <h1>All Categories</h1>
-    <ul>
-      <% @categories.each do |category|%>
-      <p><a href="/category/<%= category.id() %>"><%= category.name %></a></p>
-      <%end%>
-    </ul>
-  </div>
-</div>
+<<<<<<< HEAD
 
 </body>
+=======
+<!-- </body> -->
+>>>>>>> 8fecdd8e68654c1cd1f31b54f02ba7f689c607cf
