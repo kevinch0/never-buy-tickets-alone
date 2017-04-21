@@ -117,7 +117,7 @@ select { width: 400px; text-align-last:center; }
   font-size: 28px;
 }
 
-#btn_admin {
+#btn_admin, .btn_admin {
   background-color: rgba(0,0,0,0.4);
   text-decoration: none;
   color: white;

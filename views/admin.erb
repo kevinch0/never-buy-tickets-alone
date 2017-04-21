@@ -30,40 +30,47 @@
       <input type="number" name="duration" id="btn_admin" required="true" placeholder="duration(hours)"><br>
       <input type='imageurl' name='imageurl' id='btn_admin' required="true" placeholder="event poster URL"><br>
 
-      <select id="btn_admin" name="artist_id" type="int" required="true">
+      <select id="btn_admin" class="add_field_button" name="artist_name" type="int" required="true">
         <option id='placeholder_color btn_admin' value="">Select an Artist</option>
         <% @artists.each() do |artist| %>
-          <option value="<%= artist.id()%>">
+          <option value="<%= artist.name%>">
             <%= artist.name() %>
           </option>
         <% end %>
+        <option type="text" id='placeholder_color btn_admin' value="Add an Artist">Add an Artist</option>
+
       </select><br>
 
-      <input type='text' name='name_artist' id='btn_admin' placeholder="new artist"><br>
+      <div class="input_fields_wrap"></div>
 
-      <select id="btn_admin" name="category_id" type="int" required="true">
+      <select id="btn_admin" class="add_field_category" name="category_name" type="int" required="true">
         <option id='placeholder_color btn_admin' value="">Select a Category</option>
         <% @categories.each() do |category| %>
-          <option value="<%= category.id()%>">
+          <option value="<%= category.name%>">
             <%= category.name() %>
           </option>
         <% end %>
-      </select><br>
+        <option type="text" id='placeholder_color btn_admin' value="Add a Category">Add a Category</option>
+      </select>
 
-      <input type='text' name='category_name' id='btn_admin' placeholder="new category"><br>
+      <div class="input_fields_category_wrap"></div>
 
-      <select id="btn_admin" name="venue_id" type="int" required="true">
-        <option id='placeholder_color btn_admin' value="">Select an Venue</option>
+
+      <select id="btn_admin" class="add_field_venue" name="venue_name" type="int" required="true">
+        <option id='placeholder_color btn_admin' value="">Select a Venue</option>
         <% @venues.each() do |venue| %>
-          <option value="<%= venue.id()%>">
+          <option value="<%= venue.name%>">
             <%= venue.name() %>
           </option>
-        <% end %>
-      </select><br>
 
-      <input type='text' name='venue_name' id='btn_admin' placeholder="new venue"><br>
-      <input type='text' name='venue_address' id='btn_admin' placeholder="new venue's address"><br>
-      <input type='text' name='venue_image' id='btn_admin' placeholder="new venue's image url"><br><br>
+        <% end %>
+      <option type="text" id='btn_admin' value="Add a Venue">Add a Venue</option>
+      </select>
+
+
+      <div class="input_fields_venue_wrap">
+          <input type="hidden" name="yo" id="yo" value=1>
+      </div>
 
       <button id="btn_login" type='submit'>Submit</button>
     </form>

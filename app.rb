@@ -185,26 +185,28 @@ get('/categories') do
 end
 
 post ('/event') do
-  name = params.fetch('name').downcase!
+  name = params.fetch('name')
   date = params.fetch('date')
   duration = params.fetch('duration')
   imageurl = params.fetch('imageurl')
-  category_id = Integer(params.fetch('category_id'))
-  category = Category.find(category_id)
-  venue_id = Integer(params.fetch('venue_id'))
-  venue = Venue.find(venue_id)
-  event = Event.create({:name => name, :date => date, :duration => duration, :imageurl => imageurl, :venue => venue, :category => category})
-  artist_id = Integer(params.fetch('artist_id'))
-  artist = Artist.find(artist_id)
-  ArtistsEvent.create(event: event, artist: artist)
   artist_name = params.fetch('artist_name')
-  Artist.create(:name => artist_name)
   category_name = params.fetch('category_name')
-  Category.create(:name => category_name)
   venue_name = params.fetch('venue_name')
-  venue_image = params.fetch('venue_image')
-  venue_address = params.fetch('venue_address')
-  Venue.create(:name => venue_name, :imageurl => venue_image, :address => venue_address)
+  yo = params.fetch('yo').to_i()
+  if yo==2
+    venue_image = params.fetch('venue_image')
+    venue_address = params.fetch('venue_address')
+  end
+  artist = Artist.where(:name => artist_name).first_or_create(:name => artist_name)
+
+  category = Category.where(:name => category_name).first_or_create(:name => category_name)
+
+  venue = Venue.where(:name => venue_name).first_or_create(:name => venue_name, :imageurl => venue_image, :address => venue_address)
+
+  event = Event.create({:name => name, :date => date, :duration => duration, :imageurl => imageurl, :venue => venue, :category => category})
+
+  ArtistsEvent.create(event: event, artist: artist)
+
   if event.save()
     redirect ('/admin')
   else
