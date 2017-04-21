@@ -405,3 +405,9 @@ post("/user_contact") do
   @offer = Offer.find(params.fetch('offer_id').to_i())
   erb(:user_contact)
 end
+
+get('/maps_marker') do
+  @venue = Venue.all()
+  @arr = Venue.arr()
+  erb(:maps_marker)
+end
