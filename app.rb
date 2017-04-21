@@ -407,6 +407,7 @@ end
 get("/manage_sales") do
   @offers = Offer.all()
   erb(:manage_sales)
+end
 
 get('/maps_marker') do
   @venue = Venue.all()
