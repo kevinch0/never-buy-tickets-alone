@@ -1,11 +1,62 @@
+<nav class="navbar navbar-inverse navbar-fixed-top">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <img id="logo" class="navbar-brand" src="/img/logo.png"></img>
+    </div>
+    <ul class="nav navbar-nav">
+      <li id="name_user"><a>Welcome <%=@user.username()%>!</a></li>
+    </ul>
+    <ul class="nav navbar-nav">
+      <li id="name_user"><a href="/user">Buy Tickets</a></li>
+    </ul>
+    <ul class="nav navbar-nav">
+      <li id="name_user"><a href="/manage_sales">Manage Tickets</a></li>
+    </ul>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav navbar-right">
+          <li id="name_user"><a href="/logout">Logout</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
 <h1>Purchase this ticket</h1>
 
-<h3>Seller:</h3>
-<%= @user.username %>
 
-<h3>Price:</h3>
-<%= @offer.price %>
 
-<h3>Seller contact information</h3>
-phone number
-email
+
+<br>
+
+<div class="panel panel-default">
+  <div class="panel-body">
+
+
+    <div class="col-md-2">
+      <%= @offer.event.name %>
+    </div>
+      <div class="col-md-2">
+        <%= @offer.price %>
+      </div>
+      <div class="col-md-2">
+
+        <img style="width: 150px;" src="<%= @offer.event.imageurl %>">
+
+      </div>
+      <div class="col-md-4">
+
+        <h4>Seller contact information</h4>
+        <%= @offer.user.username %>
+        <br>
+        <%= @offer.user.phone_number %>
+        <br>
+        <%= @offer.user.email %>
+
+      </div>
+
+      <div class="col-md-2">
+        <%= @offer.event.date() %>
+
+      </div>
+
+  </div>
+</div>

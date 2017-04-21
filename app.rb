@@ -371,7 +371,7 @@ end
 post("/offer") do
 
     event_id = params.fetch("event_id").to_i()
-    price = params.fetch("price").to_i()
+    price = 'HK$ ' + params.fetch("price")
     user = @user
     bs = params.fetch("offer")
 
@@ -403,6 +403,10 @@ post("/user_contact") do
   @offer = Offer.find(params.fetch('offer_id').to_i())
   erb(:user_contact)
 end
+
+get("/manage_sales") do
+  @offers = Offer.all()
+  erb(:manage_sales)
 
 get('/maps_marker') do
   @venue = Venue.all()
