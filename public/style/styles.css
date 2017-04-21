@@ -77,12 +77,16 @@ a {
    text-align: center;
    background: transparent;
    border: none;
-   color: white;
+   color: #991d1d;
   }
+
+#placeholder_color {
+	color: #991d1d;
+}
 
 input[type="text"] {
     background: rgba(0,0,0,0.4);
-    margin: 5px;
+    /*margin: 5px;*/
     font-size: 28px;
     border: none;
     color:white;
