@@ -4,7 +4,7 @@ require('bcrypt')
 require('rickshaw')
 require('rack')
 require "sinatra/reloader"
-require('pry')
+
 
 Bundler.require(:default)
 
