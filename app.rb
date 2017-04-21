@@ -4,6 +4,7 @@ require('bcrypt')
 require('rickshaw')
 require('rack')
 require "sinatra/reloader"
+require('pry')
 
 # DB = PG.connect({:dbname => "ticket_development"})
 Bundler.require(:default)
@@ -184,7 +185,7 @@ get('/categories') do
 end
 
 post ('/event') do
-  name = params.fetch('name')
+  name = params.fetch('name').downcase!
   date = params.fetch('date')
   duration = params.fetch('duration')
   imageurl = params.fetch('imageurl')
@@ -341,8 +342,8 @@ get("/user") do
 end
 
 get("/search") do
-  searchTerm= params.fetch("search")
-  @foundEvents = Event.where("name = ?",searchTerm)
+  searchTerm= params.fetch("search").downcase
+  @foundEvents = Event.where("name LIKE ?", "%#{searchTerm}%")
   @foundArtists = Artist.where("name = ?",searchTerm)
   @foundOffers = []
   @foundArtists.each do |artist|
