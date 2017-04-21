@@ -3,6 +3,13 @@ ul{
 	list-style: none;
 }
 
+/*.panel-heading {
+border: solid 10px;
+color: red;
+
+}*/
+
+
 .event-detail{
 	font-size:28px;
 }
@@ -142,5 +149,7 @@ input[type="text"] {
 @media all and (max-width: 500px) {
 .vid-info .acronym { display: none; }
 }
+
+
 
 /* map styling */
