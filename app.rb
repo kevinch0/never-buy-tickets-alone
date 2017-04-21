@@ -194,7 +194,7 @@ post ('/event') do
   venue_id = Integer(params.fetch('venue_id'))
   venue = Venue.find(venue_id)
   event = Event.create({:name => name, :date => date, :duration => duration, :imageurl => imageurl, :venue => venue, :category => category})
-  artist_id = Integer(params.fetch('artist_id'))
+  artist_id = Integer(params.fetch('artist_id')).downcase!
   artist = Artist.find(artist_id)
   ArtistsEvent.create(event: event, artist: artist)
   if event.save()
@@ -336,7 +336,7 @@ end
 get("/search") do
   searchTerm= params.fetch("search").downcase
   @foundEvents = Event.where("name LIKE ?", "%#{searchTerm}%")
-  @foundArtists = Artist.where("name = ?",searchTerm)
+  @foundArtists = Artist.where("name = ?", "%#{searchTerm}%")
   @foundOffers = []
   @foundArtists.each do |artist|
     @foundArtistEvents=ArtistsEvent.where("artist_id= ?",artist.id)
