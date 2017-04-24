@@ -3,6 +3,13 @@ ul{
 	list-style: none;
 }
 
+/*.panel-heading {
+border: solid 10px;
+color: red;
+
+}*/
+
+
 .event-detail{
 	font-size:28px;
 }
@@ -70,16 +77,24 @@ a {
    text-align: center;
    background: transparent;
    border: none;
-   color: white;
+   color: #991d1d;
   }
+
+#placeholder_color {
+	color: #991d1d;
+}
 
 input[type="text"] {
     background: rgba(0,0,0,0.4);
-    margin: 5px;
+    /*margin: 5px;*/
     font-size: 28px;
     border: none;
     color:white;
     text-align: center;
+}
+
+input[type="date"] {
+    text-float: right;
 }
 
 input[type="password"] {
@@ -91,12 +106,36 @@ input[type="password"] {
     text-align: center;
 }
 
+select { width: 400px; text-align-last:center; }
+
+
 #btn_signup, #btn_login {
   background-color: rgba(0,0,0,0.4);
   text-decoration: none;
   color: white;
   border: none;
   font-size: 28px;
+}
+
+#btn_admin, .btn_admin {
+  background-color: rgba(0,0,0,0.4);
+  text-decoration: none;
+  color: white;
+  border: none;
+  font-size: 28px;
+	width: 80%;
+	text-align: center;
+}
+
+#btn_date {
+  background-color: rgba(0,0,0,0.4);
+  text-decoration: none;
+  color: white;
+  border: none;
+  font-size: 28px;
+	width: 80%;
+	text-align: center;
+	padding-left: 15%;
 }
 
 #block_login {
@@ -113,6 +152,80 @@ input[type="password"] {
 	padding-top: 15px;
 	background: trasparent;
 }
+
+#title_block {
+	color: white;
+	font-size: 28px;
+}
+
+
+/* page image background */
+.image-background {
+  top: 0; right: 0; bottom: 0; left: 0;
+  z-index: -99;
+	position: absolute;
+	background-size: cover;
+}
+
+#admin_background {
+	background: url('/img/admin4.jpg');
+}
+
+#admin_event_right {
+	padding-left: 10%;
+}
+
+#admin_event_left {
+	padding-right: 10%;
+}
+
+#event_scroller {
+	height: 600px;
+	overflow-y: scroll;
+}
+
+#event_tile {
+	display: inline-block;
+	position: relative;
+	float: left;
+	width: 180px;
+	height: 280px;
+	margin: 10px;
+	border: 1px solid #fff ;
+}
+
+#event_logo {
+width: 100%;
+height: 65%;
+border: 1px solid #fff ;
+
+}
+
+.thumbnail {
+	width: 150px;
+	display: inline-block;
+}
+
+#caption {
+	width: 100%;
+	margin-top: 20px;
+	padding: 0 2%;
+	position: absolute;
+	bottom: auto;
+	text-align: center;
+	vertical-align: middle;
+}
+
+#image_logo {
+	width: 100%;
+	height: 100%;
+}
+
+/*
+.position_bottom {
+	vertical-align: text-bottom;
+text-align:
+}*/
 
 /* for fullscreen video on index page */
 * { box-sizing: border-box; }
@@ -151,5 +264,7 @@ input[type="password"] {
 @media all and (max-width: 500px) {
 .vid-info .acronym { display: none; }
 }
+
+
 
 /* map styling */
