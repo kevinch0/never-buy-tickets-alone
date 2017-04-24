@@ -3,6 +3,7 @@ require('pg')
 require('bcrypt')
 require('rickshaw')
 require('rack')
+require('pry')
 require "sinatra/reloader"
 
 # DB = PG.connect({:dbname => "ticket_development"})
