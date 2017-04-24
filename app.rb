@@ -6,6 +6,7 @@ require('rack')
 require "sinatra/reloader"
 
 
+
 Bundler.require(:default)
 
 Dir[File.dirname(__FILE__) + '/lib/*.rb'].each { |file| require file }
@@ -278,7 +279,7 @@ end
 post("/offer") do
 
     event_id = params.fetch("event_id").to_i()
-    price = 'HK$ ' + params.fetch("price")
+    price = params.fetch("price")
     user = @user
     bs = params.fetch("offer")
 
