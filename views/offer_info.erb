@@ -26,47 +26,49 @@
       </div>
     </div>
   </nav>
+
   <br>
-  <div class="col-md-8 col-md-offset-2">
-    <div class="panel panel-primary">
-    <div class="panel-heading">
-      <h3 class="panel-title"></h3>
-    </div>
-    <div class="panel-body">
-      <div class="row">
-        <div class="col-md-7 ">
-          <img style="width: 400px;" src="<%= @offer.event.imageurl %>">
-        </div>
 
-        <div class="col-md-5">
-          <ul class="list-group">
-            <li class="list-group-item">Event <%= @offer.event.name %></li>
-            <li></li>
-            <li class="list-group-item">Price <%=@offer.price %></li>
+  <div class='container'>
+    <div class="col-md-8 col-md-offset-2">
+      <div class="panel panel-primary">
+      <div class="panel-heading">
+        <h3 class="panel-title"></h3>
+      </div>
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-md-7 ">
+            <img style="width: 400px;" src="<%= @offer.event.imageurl %>">
+          </div>
 
-        <!-- if @user is equal to user who created this offer, then allow delete -->
+          <div class="col-md-5">
+            <ul class="list-group">
+              <li class="list-group-item">Event <%= @offer.event.name %></li>
+              <li></li>
+              <li class="list-group-item">Price <%=@offer.price %></li>
 
-        <% if @user == @offer.user%>
-            <li class="list-group-item">
-              <form action="/offer/<%= @offer.id() %>" method="post">
-                <input name="_method" type="hidden" value="delete">
-                <button type="submit" class="btn btn-danger">Delete </button>
-              </form>
-            </li>
-        <% end %>
+          <!-- if @user is equal to user who created this offer, then allow delete -->
 
-        <!--  end delete -->
+          <% if @user == @offer.user%>
+              <li class="list-group-item">
+                <form action="/offer/<%= @offer.id() %>" method="post">
+                  <input name="_method" type="hidden" value="delete">
+                  <button type="submit" class="btn btn-danger">Delete </button>
+                </form>
+              </li>
+          <% end %>
 
-          </ul>
-        </div>
+          <!--  end delete -->
 
+            </ul>
+          </div>
+
+          </div>
         </div>
       </div>
     </div>
   </div>
-  <br>
-  <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-
+  
   <div class='container'>
     <h1>Address: <%= @venue %></h1>
     <div id="map" style="width: 900px; height: 500px; margin-left: 120px;"></div>
