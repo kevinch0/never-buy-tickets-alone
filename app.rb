@@ -242,8 +242,8 @@ end
 
 get("/search") do
   searchTerm= params.fetch("search").downcase
-  @foundEvents = Event.where("name LIKE ?", "%#{searchTerm}%")
-  @foundArtists = Artist.where("name = ?", "%#{searchTerm}%")
+  @foundEvents = Event.where("name like ?", "%#{searchTerm}%")
+  @foundArtists = Artist.where("name like ?", "%#{searchTerm}%")
   @foundOffers = []
   @foundArtists.each do |artist|
     @foundArtistEvents=ArtistsEvent.where("artist_id= ?",artist.id)
