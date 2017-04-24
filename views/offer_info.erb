@@ -45,7 +45,7 @@
             <ul class="list-group">
               <li class="list-group-item">Event <%= @offer.event.name %></li>
               <li></li>
-              <li class="list-group-item">Price <%=@offer.price %></li>
+              <li class="list-group-item">Price: HKD <%=@offer.price %></li>
 
           <!-- if @user is equal to user who created this offer, then allow delete -->
 
@@ -68,7 +68,7 @@
       </div>
     </div>
   </div>
-  
+
   <div class='container'>
     <h1>Address: <%= @venue %></h1>
     <div id="map" style="width: 900px; height: 500px; margin-left: 120px;"></div>

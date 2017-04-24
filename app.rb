@@ -6,7 +6,6 @@ require('rack')
 require('pry')
 require "sinatra/reloader"
 
-# DB = PG.connect({:dbname => "ticket_development"})
 Bundler.require(:default)
 
 Dir[File.dirname(__FILE__) + '/lib/*.rb'].each { |file| require file }
@@ -334,7 +333,8 @@ get("/user") do
 end
 
 get("/search") do
-  searchTerm= params.fetch("search").downcase()
+
+  searchTerm= params.fetch("search").downcase
   @foundEvents = Event.where("lower(name) like ?", "%#{searchTerm}%")
   @foundArtists = Artist.where("lower(name) like ?", "%#{searchTerm}%")
   @foundOffers = []
@@ -372,7 +372,7 @@ end
 post("/offer") do
 
     event_id = params.fetch("event_id").to_i()
-    price = params.fetch("price").to_i()
+    price = params.fetch("price")
     user = @user
     bs = params.fetch("offer")
 
